@@ -1,0 +1,30 @@
+{
+	"sheets": [
+		{
+			"name": "test",
+			"columns": [
+				{
+					"typeStr": "13",
+					"name": "file",
+					"kind": null
+				}
+			],
+			"lines": [
+				{
+					"file": "Link.aseprite"
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "test2",
+			"columns": [],
+			"lines": [],
+			"separators": [],
+			"props": {}
+		}
+	],
+	"customTypes": [],
+	"compress": false
+}

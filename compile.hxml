@@ -1,0 +1,9 @@
+-cp src
+-lib heaps
+-lib hlsdl
+-lib echoes
+-lib heaps-aseprite
+-lib hxmath
+-lib deepnightLibs
+-hl base.hl
+-main Main
