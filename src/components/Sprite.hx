@@ -17,7 +17,6 @@ class Sprite {
 function loadAnim(aseResource: aseprite.res.Aseprite, startTag: String, parent: h2d.Object) {
     var resource = aseResource.toAseprite();
     var anim = new AseAnim(resource.getTag(startTag), parent);
-    anim.setScale(3);
     anim.loop = true;
 
     return new Sprite(resource, anim);

@@ -1,3 +1,4 @@
+import Layers.defaultLayer;
 import editor.Editor.initEditor;
 import editor.Editor.editorResize;
 import editor.Editor.editorUpdate;
@@ -22,7 +23,7 @@ class Main extends hxd.App {
         #if (hl)
         initEditor();
         #end
-
+        
         defaultParent = Layers.defaultLayer;
         defaultDebugFont = hxd.res.DefaultFont.get();
         initController();
@@ -36,6 +37,7 @@ class Main extends hxd.App {
         enemy(300, 300);
 
         Window.getInstance().vsync = true;
+        scaleToFit();
     }
 
     override function update(dt:Float) {    
@@ -47,10 +49,16 @@ class Main extends hxd.App {
         #end
     }
 
-    override function onResize(){
+    override function onResize() {
+        scaleToFit();
+
         #if (hl)
         editorResize(s2d.width, s2d.height);
         #end
+    }
+
+    function scaleToFit() {
+        defaultLayer.setScale( dn.heaps.Scaler.bestFit_f(Const.referenceWidth, Const.referenceHeight));
     }
     
     static function main() {
