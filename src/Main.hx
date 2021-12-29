@@ -1,3 +1,10 @@
+import editor.Editor.initEditor;
+import editor.Editor.editorResize;
+import editor.Editor.editorUpdate;
+import Layers.initLayers;
+import hxd.Window;
+import hxd.App;
+import h2d.Layers;
 import systems.Player;
 import systems.Enemy;
 import systems.Render;
@@ -11,9 +18,14 @@ class Main extends hxd.App {
     override function init() {
         trace('GAME START');
         hxd.Res.initEmbed();
-        defaultParent = s2d;
+        initLayers(s2d);
+        #if (hl)
+        initEditor();
+        #end
+
+        defaultParent = Layers.defaultLayer;
         defaultDebugFont = hxd.res.DefaultFont.get();
-        initController(); 
+        initController();
 
         Workflow.addSystem(new Player());
         Workflow.addSystem(new Enemy());
@@ -22,13 +34,25 @@ class Main extends hxd.App {
 
         player(200, 200);
         enemy(300, 300);
+
+        Window.getInstance().vsync = true;
     }
 
-    override function update(dt:Float) {
-        s2d.ysort(0);
+    override function update(dt:Float) {    
+        Layers.defaultLayer.ysort(0);
         Workflow.update(dt);
+
+        #if (hl)
+        editorUpdate(dt);
+        #end
     }
 
+    override function onResize(){
+        #if (hl)
+        editorResize(s2d.width, s2d.height);
+        #end
+    }
+    
     static function main() {
         new Main();
     }
