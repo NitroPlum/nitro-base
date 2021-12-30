@@ -1,12 +1,15 @@
 package systems;
 
-import echoes.System;
+import ecs.System;
 import components.Position;
 import components.Velocity;
 
 class Movement extends System {
-    @u function move(dt: Float, pos: Position, vel: Velocity) {
-        pos.x += vel.x * dt;
-        pos.y += vel.y * dt;
+    @:fastFamily var movables : { pos : Position, vel : Velocity };
+    override function update(_dt: Float) {
+        iterate(movables, {
+            pos.x += vel.x * _dt;
+            pos.y += vel.y * _dt;
+        });
     }
 }

@@ -3,8 +3,11 @@ package systems;
 import components.Sprite;
 import components.Position;
 
-class Render extends echoes.System {
-    @u function updateSpritePosition(spr:Sprite, pos:Position) {
-        spr.anim.setPosition(pos.x, pos.y);
+class Render extends ecs.System {
+    @:fastFamily var drawable : { spr:Sprite, pos:Position };
+    override function update(_dt: Float) {
+        iterate(drawable, {
+            spr.anim.setPosition(pos.x, pos.y);
+        });
     }
 }

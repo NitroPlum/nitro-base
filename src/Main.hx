@@ -12,8 +12,9 @@ import systems.Render;
 import systems.Movement;
 import Const.defaultParent;
 import Const.defaultDebugFont;
+import Const.UNIVERSE;
 import Controller.initController;
-import echoes.Workflow;
+import ecs.Universe;
 
 class Main extends hxd.App {
     override function init() {
@@ -28,21 +29,24 @@ class Main extends hxd.App {
         defaultDebugFont = hxd.res.DefaultFont.get();
         initController();
 
-        Workflow.addSystem(new Player());
-        Workflow.addSystem(new Enemy());
-        Workflow.addSystem(new Movement());
-        Workflow.addSystem(new Render());
+        UNIVERSE = new Universe(Const.MAX_ENTITIES);
+        UNIVERSE.setSystems(
+            Player,
+            Enemy,
+            Movement,
+            Render
+        );
 
         player(200, 200);
         enemy(300, 300);
 
-        Window.getInstance().vsync = true;
+        Window.getInstance().vsync = false;
         scaleToFit();
     }
 
     override function update(dt:Float) {    
         Layers.defaultLayer.ysort(0);
-        Workflow.update(dt);
+        UNIVERSE.update(dt);
 
         #if (hl)
         editorUpdate(dt);

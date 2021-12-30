@@ -1,12 +1,13 @@
 package systems;
 
+import Const.UNIVERSE;
 import Const.defaultParent;
 import components.Sprite.loadAnim;
 import components.Position;
 import components.Velocity;
 import components.Sprite.Sprite;
 import components.FSM;
-import echoes.Entity;
+import ecs.System;
 
 enum EnemyState {
     IDLE;
@@ -16,7 +17,8 @@ enum EnemyState {
 }
 
 function enemy(x: Int, y: Int) {
-    new Entity().add(
+    final entity = UNIVERSE.createEntity();
+    UNIVERSE.setComponents( entity,
         new FSM<EnemyState>(EnemyState.IDLE),
         new Position(x, y),
         new Velocity(0., 0.),
@@ -24,8 +26,10 @@ function enemy(x: Int, y: Int) {
     );
 }
 
-class Enemy extends echoes.System {
-    @u function update(fsm: FSM<EnemyState>, spr:Sprite, pos:Position, vel: Velocity) {
+class Enemy extends System {
+    @:fastFamily var enemies : { fsm: FSM<EnemyState>, spr:Sprite, pos:Position, vel: Velocity };
+
+    override function update(_dt: Float) {
         // var stick: Vector2 = new Vector2(ctrl.getAnalogValue(MoveX), ctrl.getAnalogValue(MoveY)); 
 
         // switch (fsm.state) {
