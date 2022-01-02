@@ -19,8 +19,25 @@
 		},
 		{
 			"name": "test2",
-			"columns": [],
-			"lines": [],
+			"columns": [
+				{
+					"typeStr": "13",
+					"name": "Sprite",
+					"opt": true
+				},
+				{
+					"typeStr": "0",
+					"name": "uid",
+					"kind": null,
+					"scope": null
+				}
+			],
+			"lines": [
+				{
+					"Sprite": "res/Link.aseprite",
+					"uid": ""
+				}
+			],
 			"separators": [],
 			"props": {}
 		}

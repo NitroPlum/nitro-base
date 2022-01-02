@@ -1,5 +1,8 @@
 package systems;
 
+import Layers.groundLayer;
+import editor.Editor.status;
+import components.CurrentRoom;
 import hxmath.math.Vector2;
 import Const.defaultParent;
 import Const.UNIVERSE;
@@ -18,13 +21,14 @@ enum PlayerState {
     ROLL;
 }
 
-function player(x: Int, y: Int) {
+function player(currentRoom: CurrentRoom, x: Int, y: Int) {
     final player = UNIVERSE.createEntity();
     UNIVERSE.setComponents(player,
         new FSM<PlayerState>(PlayerState.IDLE),
         new Position(x, y),
         new Velocity(0., 0.),
-        loadAnim(hxd.Res.Link, "IDLE", defaultParent)
+        loadAnim(hxd.Res.Link, "IDLE", defaultParent),
+        currentRoom
     );
 }
 
@@ -43,7 +47,6 @@ class Player extends ecs.System {
 
                     if(!Vector2.equals(stick, Vector2.zero)) {
                         fsm.changeState(PlayerState.RUN);
-                        trace('HOR INPUT : ' + ctrl.getAnalogValue(MoveX));
                     }
 
                     vel.copy(Vector2.zero);
@@ -55,11 +58,18 @@ class Player extends ecs.System {
                         fsm.changeState(PlayerState.IDLE);
                     }
 
-                    vel.copy(stick * 30.);
+                    vel.copy(stick * 4 * _dt);
                 case _: 
             }
 
-
+            status = [
+                "X : " + pos.x,
+                "Y : " + pos.y,
+                "Tile X : " + pos.tileX,
+                "Tile Y : " + pos.tileY,
+                "X Ratio : " + pos.xRatio,
+                "Y Ratio : " + pos.yRatio,
+            ];
         });
     }
 }

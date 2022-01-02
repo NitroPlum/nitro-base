@@ -1,3 +1,8 @@
+import components.Tiles.tilesCache;
+import components.CurrentRoom;
+import Layers.groundLayer;
+import systems.Rooms.initRooms;
+import systems.Rooms.Rooms;
 import Layers.defaultLayer;
 import editor.Editor.initEditor;
 import editor.Editor.editorResize;
@@ -10,8 +15,6 @@ import systems.Player;
 import systems.Enemy;
 import systems.Render;
 import systems.Movement;
-import Const.defaultParent;
-import Const.defaultDebugFont;
 import Const.UNIVERSE;
 import Controller.initController;
 import ecs.Universe;
@@ -34,14 +37,17 @@ class Main extends hxd.App {
             Player,
             Enemy,
             Movement,
+            Rooms,
             Render
         );
 
-        player(200, 200);
-        enemy(300, 300);
+        player(new CurrentRoom(-1), 70, 70);
+        enemy(100, 100);
 
-        Window.getInstance().vsync = false;
+        initRooms();
+        Window.getInstance().vsync = true;
         scaleToFit();
+        components.Tiles.cacheTiles();
     }
 
     override function update(dt:Float) {    
@@ -62,6 +68,7 @@ class Main extends hxd.App {
     }
 
     function scaleToFit() {
+        groundLayer.setScale( dn.heaps.Scaler.bestFit_f(Const.referenceWidth, Const.referenceHeight));
         defaultLayer.setScale( dn.heaps.Scaler.bestFit_f(Const.referenceWidth, Const.referenceHeight));
     }
     
