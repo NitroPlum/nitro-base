@@ -1,9 +1,10 @@
 -cp src
 -lib heaps
 -lib hlsdl
--lib echoes
+-lib aidenecs
 -lib heaps-aseprite
 -lib hxmath
 -lib deepnightLibs
+-lib ldtk-haxe-api
 -hl base.hl
 -main Main

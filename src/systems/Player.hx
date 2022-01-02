@@ -1,14 +1,17 @@
 package systems;
 
+import Layers.groundLayer;
+import editor.Editor.status;
+import components.CurrentRoom;
 import hxmath.math.Vector2;
 import Const.defaultParent;
+import Const.UNIVERSE;
 import components.Sprite.loadAnim;
 import components.Sprite.play;
 import components.Position;
 import components.Velocity;
 import components.Sprite.Sprite;
 import components.FSM;
-import echoes.Entity;
 import Controller;
 
 enum PlayerState {
@@ -18,40 +21,55 @@ enum PlayerState {
     ROLL;
 }
 
-function player(x: Int, y: Int) {
-    new Entity().add(
+function player(currentRoom: CurrentRoom, x: Int, y: Int) {
+    final player = UNIVERSE.createEntity();
+    UNIVERSE.setComponents(player,
         new FSM<PlayerState>(PlayerState.IDLE),
         new Position(x, y),
         new Velocity(0., 0.),
-        loadAnim(hxd.Res.Link, "IDLE", defaultParent)
+        loadAnim(hxd.Res.Link, "IDLE", defaultParent),
+        currentRoom
     );
 }
 
-class Player extends echoes.System {
-    @u function update(fsm: FSM<PlayerState>, spr:Sprite, pos:Position, vel: Velocity) {
-        fsm.updateState();
-        var stick: Vector2 = new Vector2(ctrl.getAnalogValue(MoveX), ctrl.getAnalogValue(MoveY)); 
+class Player extends ecs.System {
+    @:fastFamily var players : { fsm: FSM<PlayerState>, spr:Sprite, pos:Position, vel: Velocity };
+    override function update(_dt: Float) {
+        iterate(players, {
 
-        switch (fsm.state) {
-            case PlayerState.IDLE:
-                if(fsm.stateChanged) play(spr, "IDLE");
 
-                if(!Vector2.equals(stick, Vector2.zero)) {
-                    fsm.changeState(PlayerState.RUN);
-                    trace('HOR INPUT : ' + ctrl.getAnalogValue(MoveX));
-                }
+            fsm.updateState();
+            var stick: Vector2 = new Vector2(ctrl.getAnalogValue(MoveX), ctrl.getAnalogValue(MoveY)); 
 
-                vel.copy(Vector2.zero);
+            switch (fsm.state) {
+                case PlayerState.IDLE:
+                    if(fsm.stateChanged) play(spr, "IDLE");
 
-            case PlayerState.RUN:
-                if(fsm.stateChanged) play(spr, "RUN");
+                    if(!Vector2.equals(stick, Vector2.zero)) {
+                        fsm.changeState(PlayerState.RUN);
+                    }
 
-                if(Vector2.equals(stick, Vector2.zero)) {
-                    fsm.changeState(PlayerState.IDLE);
-                }
+                    vel.copy(Vector2.zero);
 
-                vel.copy(stick * 30.);
-            case _: 
-        }
+                case PlayerState.RUN:
+                    if(fsm.stateChanged) play(spr, "RUN");
+
+                    if(Vector2.equals(stick, Vector2.zero)) {
+                        fsm.changeState(PlayerState.IDLE);
+                    }
+
+                    vel.copy(stick * 4 * _dt);
+                case _: 
+            }
+
+            status = [
+                "X : " + pos.x,
+                "Y : " + pos.y,
+                "Tile X : " + pos.tileX,
+                "Tile Y : " + pos.tileY,
+                "X Ratio : " + pos.xRatio,
+                "Y Ratio : " + pos.yRatio,
+            ];
+        });
     }
 }

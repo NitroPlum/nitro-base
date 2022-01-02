@@ -8,8 +8,11 @@ import imgui.ImGui;
 var showEditor = false;
 var imguiDrawable:ImGuiDrawable;
 
+var status: Array<String>;
+
 function initEditor(){
     imguiDrawable = new ImGuiDrawable(Layers.editorLayer);
+    status = new Array<String>();
 }
 
 function editorUpdate(dt: Float) {
@@ -20,6 +23,7 @@ function editorUpdate(dt: Float) {
     if(showEditor) {
         ImGui.newFrame();
         showStatus(Std.int(Timer.fps()));
+        // ImGui.showDemoWindow();
         ImGui.render();  
         ImGui.endFrame();
     }
@@ -50,6 +54,10 @@ function showStatus(fps: Int) {
         ImGui.text("Game Status");
         ImGui.separator();
         ImGui.text("FPS : " + fps);
+        ImGui.separator();
+        for(msg in status) {
+            ImGui.text(msg);
+        }
     }
     ImGui.end();
 }
