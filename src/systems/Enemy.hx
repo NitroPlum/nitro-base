@@ -1,5 +1,6 @@
 package systems;
 
+import systems.Player.PlayerState;
 import aseprite.res.Aseprite;
 import components.CurrentRoom.RoomState;
 import Const.UNIVERSE;
@@ -18,6 +19,10 @@ enum EnemyState {
     ROLL;
 }
 
+var script = "
+    move(vel, dt);
+";
+
 function spawnEnemy(x: Int, y: Int, roomId:Int) {
     final entity = UNIVERSE.createEntity();
     UNIVERSE.setComponents( entity,
@@ -29,13 +34,30 @@ function spawnEnemy(x: Int, y: Int, roomId:Int) {
     );
 }
 
+function moveEnemy(vel: Velocity, _dt: Float) {
+    vel.y = 2 * _dt;
+}
+
 class Enemy extends System {
+    @:fastFamily var player : { fsm: FSM<PlayerState>, spr:Sprite, pos:Position, vel: Velocity };
     @:fastFamily var enemies : { fsm: FSM<EnemyState>, spr:Sprite, pos:Position, vel: Velocity };
 
-
+    var parser = new hscript.Parser();
+    var interp = new hscript.Interp();
+    
     override function update(_dt: Float) {
-        // iterate(enemies, {
-        // }
+        var program = parser.parseString(script);
+        iterate(enemies, {
+            interp.variables.set("dt", _dt);
+            interp.variables.set("vel", vel);
+            interp.variables.set("spr", spr);
+            interp.variables.set("move", moveEnemy);
+
+            // Yanrishatum explained that expr should prevent context recreation. 
+            // If issues arise, see if using Execute fixes them. Maybe something is carrying over?
+            // interp.execute(program);
+            interp.expr(program);
+        });
 
         // var stick: Vector2 = new Vector2(ctrl.getAnalogValue(MoveX), ctrl.getAnalogValue(MoveY)); 
 

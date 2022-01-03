@@ -40,6 +40,23 @@
 			],
 			"separators": [],
 			"props": {}
+		},
+		{
+			"name": "test3",
+			"columns": [
+				{
+					"typeStr": "13",
+					"name": "test",
+					"kind": null
+				}
+			],
+			"lines": [
+				{
+					"test": "res/Link.aseprite"
+				}
+			],
+			"separators": [],
+			"props": {}
 		}
 	],
 	"customTypes": [],

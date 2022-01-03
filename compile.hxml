@@ -6,5 +6,6 @@
 -lib hxmath
 -lib deepnightLibs
 -lib ldtk-haxe-api
+-lib hscript
 -hl base.hl
 -main Main

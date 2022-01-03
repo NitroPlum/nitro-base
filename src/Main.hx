@@ -1,8 +1,4 @@
 import systems.Rooms.project;
-import h2d.Scene.ScaleMode;
-import systems.Camera.initCamera;
-import components.Tiles.tilesCache;
-import components.CurrentRoom;
 import Layers.groundLayer;
 import systems.Rooms.Rooms;
 import Layers.defaultLayer;
@@ -27,9 +23,6 @@ class Main extends hxd.App {
         trace('GAME START');
         hxd.Res.initEmbed();
         initLayers(s2d);
-        #if (hl)
-        initEditor();
-        #end
         
         defaultParent = Layers.defaultLayer;
         defaultDebugFont = hxd.res.DefaultFont.get();
@@ -48,10 +41,12 @@ class Main extends hxd.App {
         player(0, 0, project.all_levels.Level_0);
 
         initCamera(s2d);
+        #if (hl)
+        initEditor();
+        #end
         
         Window.getInstance().vsync = true;
         components.Tiles.cacheTiles();
-        
     }
 
     override function update(dt:Float) {    
@@ -64,7 +59,7 @@ class Main extends hxd.App {
     }
 
     override function onResize() {
-        letterbox();
+        //letterbox();
 
         #if (hl)
         editorResize(s2d.width, s2d.height);
