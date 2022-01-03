@@ -35,15 +35,15 @@ class Movement extends System {
             // Move on Y
             pos.yRatio += vel.y;
             
-            // Check Bottom
-            if(pos.yRatio >= 1.0 && hasTag(pos.tileX, pos.tileY + 1, Enum_TileEnum.COLLIDE)) {
-                pos.yRatio = 1.0;
+            //Check Bottom
+            if(pos.yRatio >= 0.7 && hasTag(pos.tileX, pos.tileY + 1, Enum_TileEnum.COLLIDE)) {
+                pos.yRatio = 0.7;
                 vel.y = 0;
             }
 
             // Check Top
-            if(pos.yRatio <= 0.5 &&  hasTag(pos.tileX, pos.tileY - 1, Enum_TileEnum.COLLIDE)) {
-                pos.yRatio = 0.5;
+            if(pos.yRatio <= 0.3 &&  hasTag(pos.tileX, pos.tileY - 1, Enum_TileEnum.COLLIDE)) {
+                pos.yRatio = 0.3;
                 vel.y = 0;
             }
 

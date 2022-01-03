@@ -1,5 +1,6 @@
 package systems;
 
+import systems.Rooms.changeRoom;
 import Layers.groundLayer;
 import editor.Editor.status;
 import components.CurrentRoom;
@@ -21,22 +22,24 @@ enum PlayerState {
     ROLL;
 }
 
-function player(currentRoom: CurrentRoom, x: Int, y: Int) {
+function player(x: Int, y: Int, level: LdtkProject_Level) {
     final player = UNIVERSE.createEntity();
+    var roomState = new RoomState(-1);
     UNIVERSE.setComponents(player,
         new FSM<PlayerState>(PlayerState.IDLE),
         new Position(x, y),
         new Velocity(0., 0.),
         loadAnim(hxd.Res.Link, "IDLE", defaultParent),
-        currentRoom
+        roomState
     );
+    changeRoom(roomState, level);
 }
 
 class Player extends ecs.System {
     @:fastFamily var players : { fsm: FSM<PlayerState>, spr:Sprite, pos:Position, vel: Velocity };
     override function update(_dt: Float) {
         iterate(players, {
-
+            
 
             fsm.updateState();
             var stick: Vector2 = new Vector2(ctrl.getAnalogValue(MoveX), ctrl.getAnalogValue(MoveY)); 

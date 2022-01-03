@@ -1,5 +1,7 @@
 package components;
 
+import hxd.Res;
+import hxd.res.Loader;
 import aseprite.Aseprite;
 import aseprite.AseAnim;
 

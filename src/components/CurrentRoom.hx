@@ -1,8 +1,11 @@
 package components;
 
-class CurrentRoom {
-    public var uid: Int;
+class RoomState {
+    public var current: Int = -1;
+    public var last:    Int = -1;
+    public var next:    Int = -1;
+    
     public function new(_uid: Int) {
-        uid = _uid;
+        current = _uid;
     }
 }

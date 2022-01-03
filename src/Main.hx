@@ -1,7 +1,9 @@
+import systems.Rooms.project;
+import h2d.Scene.ScaleMode;
+import systems.Camera.initCamera;
 import components.Tiles.tilesCache;
 import components.CurrentRoom;
 import Layers.groundLayer;
-import systems.Rooms.initRooms;
 import systems.Rooms.Rooms;
 import Layers.defaultLayer;
 import editor.Editor.initEditor;
@@ -15,6 +17,7 @@ import systems.Player;
 import systems.Enemy;
 import systems.Render;
 import systems.Movement;
+import systems.Camera;
 import Const.UNIVERSE;
 import Controller.initController;
 import ecs.Universe;
@@ -36,18 +39,19 @@ class Main extends hxd.App {
         UNIVERSE.setSystems(
             Player,
             Enemy,
-            Movement,
             Rooms,
-            Render
+            Movement,
+            Render,
+            Camera
         );
 
-        player(new CurrentRoom(-1), 70, 70);
-        enemy(100, 100);
+        player(0, 0, project.all_levels.Level_0);
 
-        initRooms();
+        initCamera(s2d);
+        
         Window.getInstance().vsync = true;
-        scaleToFit();
         components.Tiles.cacheTiles();
+        
     }
 
     override function update(dt:Float) {    
@@ -60,7 +64,7 @@ class Main extends hxd.App {
     }
 
     override function onResize() {
-        scaleToFit();
+        letterbox();
 
         #if (hl)
         editorResize(s2d.width, s2d.height);

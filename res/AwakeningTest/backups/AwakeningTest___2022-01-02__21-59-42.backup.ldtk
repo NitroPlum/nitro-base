@@ -367,6 +367,50 @@
 									"params": ["TestEnemy"]
 								}]
 							}]
+						},
+						{
+							"__identifier": "EnemySpawn",
+							"__grid": [2,6],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 16,
+							"px": [32,96],
+							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "EnemySpawn",
+							"__grid": [7,4],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 16,
+							"px": [112,64],
+							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "EnemySpawn",
+							"__grid": [3,4],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 16,
+							"px": [48,64],
+							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
+						},
+						{
+							"__identifier": "EnemySpawn",
+							"__grid": [5,7],
+							"__pivot": [0,0],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 16,
+							"px": [80,112],
+							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
 						}
 					]
 				},

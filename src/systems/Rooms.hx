@@ -1,5 +1,5 @@
 package systems;
-import hl.BaseType.Enum;
+import systems.Enemy.EnemyState;
 import components.CurrentRoom;
 import systems.Player.PlayerState;
 import components.FSM;
@@ -9,40 +9,55 @@ import Layers.groundLayer;
 
 final project = new LdtkProject();
 var currentRoom: LdtkProject_Level;
+var previousRoom: LdtkProject_Level;
 
-function initRooms() {
-    changeRoom(project.all_levels.Level_0);
-}
-
-function changeRoom(?level: LdtkProject_Level) {
+function changeRoom(roomState: RoomState, ?level: LdtkProject_Level) {
     groundLayer.removeChildren();
     loadRoom(level);
-    currentRoom = level;
+
+    roomState.last = roomState.current;
+    roomState.current = level.uid;
+    
+    // Load all adjacent rooms
     for (lvl in level.neighbours) {
         loadRoom(project.getLevel(lvl.levelUid));
     }
 }
 
-function loadRoom (level: LdtkProject_Level) {
-    var layerRender = level.l_GROUND.render();
-    layerRender.setPosition(level.worldX, level.worldY);
-    groundLayer.addChild(layerRender);
-}
-
-function updateCurrentRoom(x: Int, y: Int) {
+function updateCurrentRoom(roomState: RoomState, x: Int, y: Int) {
     var room = project.getLevelAt(x, y);
     if(room == null) return;
 
-    if(currentRoom.uid != room.uid) {
-        changeRoom(room);
+    if(roomState.current != room.uid) {
+        changeRoom(roomState, room);
     }
 }
 
+function loadRoom (level: LdtkProject_Level) {
+    // Render the room
+    var layerRender = level.l_GROUND.render();
+    layerRender.setPosition(level.worldX, level.worldY);
+    groundLayer.addChild(layerRender);
+
+    for(enemy in level.l_Entities.all_EnemySpawn) {
+        Enemy.spawnEnemy(enemy.pixelX, enemy.pixelY, level.uid);
+    } 
+    // load entities
+}
+
 class Rooms extends System {
-    @:fastFamily var player : { fsm: FSM<PlayerState>, pos : Position };
+    @:fastFamily var player : { fsm: FSM<PlayerState>, pos : Position, roomState: RoomState};
+    @:fastFamily var enemies: { enemyFSM: FSM<EnemyState>, enemyPos : Position, enemyRoomState: RoomState};
     override function update(_dt: Float) {
         iterate(player, {
-            updateCurrentRoom(Std.int(pos.x), Std.int(pos.y));
+            updateCurrentRoom(roomState, Std.int(pos.x), Std.int(pos.y));
+
+            iterate(enemies, enemy -> {
+                if (enemyRoomState.current != roomState.current) {
+                    UNIVERSE.deleteEntity(enemy);
+                }
+            });
         });
+
     }
 }
