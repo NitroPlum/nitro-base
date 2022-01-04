@@ -1,7 +1,7 @@
 package systems;
 
+import NitroMath.directionTo;
 import systems.Player.PlayerState;
-import aseprite.res.Aseprite;
 import components.CurrentRoom.RoomState;
 import Const.UNIVERSE;
 import Const.defaultParent;
@@ -20,7 +20,7 @@ enum EnemyState {
 }
 
 var script = "
-    move(vel, dt);
+    //vel = directionTo(pos.x, pos.y, pPos.x, pPos.y);
 ";
 
 function spawnEnemy(x: Int, y: Int, roomId:Int) {
@@ -34,30 +34,39 @@ function spawnEnemy(x: Int, y: Int, roomId:Int) {
     );
 }
 
-function moveEnemy(vel: Velocity, _dt: Float) {
-    vel.y = 2 * _dt;
-}
-
 class Enemy extends System {
-    @:fastFamily var player : { fsm: FSM<PlayerState>, spr:Sprite, pos:Position, vel: Velocity };
+    @:fastFamily var player : { playerFSM: FSM<PlayerState>, playerSpr:Sprite, playerPos:Position, playerVel: Velocity };
     @:fastFamily var enemies : { fsm: FSM<EnemyState>, spr:Sprite, pos:Position, vel: Velocity };
 
     var parser = new hscript.Parser();
     var interp = new hscript.Interp();
     
+    override function onAdded() {
+        // interp.variables.set("move", moveEnemy);
+        
+    }
+    
     override function update(_dt: Float) {
         var program = parser.parseString(script);
+        var pPos:Position = null;
+        iterate(player, {pPos = playerPos;});
         iterate(enemies, {
             interp.variables.set("dt", _dt);
             interp.variables.set("vel", vel);
             interp.variables.set("spr", spr);
-            interp.variables.set("move", moveEnemy);
+            interp.variables.set("pos", pos);
+            interp.variables.set("pPos", pPos);
+            interp.variables.set("directionTo", directionTo);
 
-            // Yanrishatum explained that expr should prevent context recreation. 
-            // If issues arise, see if using Execute fixes them. Maybe something is carrying over?
+            // // Yanrishatum explained that expr should prevent context recreation. 
+            // // If issues arise, see if using Execute fixes them. Maybe something is carrying over?
             // interp.execute(program);
-            interp.expr(program);
+            //interp.expr(program);
+            // var temp = directionTo(pos.x, pos.y, pPos.x, pPos.y);
+            // trace("");
+            //vel.copy(temp);
         });
+        //});
 
         // var stick: Vector2 = new Vector2(ctrl.getAnalogValue(MoveX), ctrl.getAnalogValue(MoveY)); 
 

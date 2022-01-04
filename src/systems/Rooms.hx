@@ -10,6 +10,7 @@ import Layers.groundLayer;
 final project = new LdtkProject();
 var currentRoom: LdtkProject_Level;
 var previousRoom: LdtkProject_Level;
+var levelStarted: Bool = false;
 
 function changeRoom(roomState: RoomState, ?level: LdtkProject_Level) {
     groundLayer.removeChildren();
@@ -39,10 +40,24 @@ function loadRoom (level: LdtkProject_Level) {
     layerRender.setPosition(level.worldX, level.worldY);
     groundLayer.addChild(layerRender);
 
+    if(!levelStarted) {
+        levelStarted = true;
+        // Player Start
+        var pStart: Entity_PlayerStart = null;
+        if(level.l_Entities.all_PlayerStart.length > 0)
+            pStart = level.l_Entities.all_PlayerStart[0];
+        if(pStart != null) 
+            systems.Player.player(pStart.pixelX, pStart.pixelY, level);
+    }
+
+    // Spawn Enemies
     for(enemy in level.l_Entities.all_EnemySpawn) {
         Enemy.spawnEnemy(enemy.pixelX, enemy.pixelY, level.uid);
-    } 
-    // load entities
+    }
+}
+
+function getRoom(uid: Int) {
+    return project.getLevel(uid);
 }
 
 class Rooms extends System {
@@ -58,6 +73,5 @@ class Rooms extends System {
                 }
             });
         });
-
     }
 }

@@ -1,3 +1,4 @@
+import systems.Rooms.loadRoom;
 import systems.Rooms.project;
 import Layers.groundLayer;
 import systems.Rooms.Rooms;
@@ -15,6 +16,8 @@ import systems.Render;
 import systems.Movement;
 import systems.Camera;
 import Const.UNIVERSE;
+import Const.referenceHeight;
+import Const.referenceWidth;
 import Controller.initController;
 import ecs.Universe;
 
@@ -38,7 +41,8 @@ class Main extends hxd.App {
             Camera
         );
 
-        player(0, 0, project.all_levels.Level_0);
+        //player(0, 0, project.all_levels.Level_0);
+        loadRoom(project.all_levels.Level_0);
 
         initCamera(s2d);
         #if (hl)
@@ -47,6 +51,7 @@ class Main extends hxd.App {
         
         Window.getInstance().vsync = true;
         components.Tiles.cacheTiles();
+        Window.getInstance().resize(referenceWidth * 4, referenceHeight * 4);
     }
 
     override function update(dt:Float) {    
@@ -59,7 +64,7 @@ class Main extends hxd.App {
     }
 
     override function onResize() {
-        //letterbox();
+        letterbox();
 
         #if (hl)
         editorResize(s2d.width, s2d.height);
