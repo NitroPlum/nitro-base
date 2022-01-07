@@ -29,7 +29,7 @@ function updateCamSize() {
 }
 
 function letterbox() {
-    s2d.scaleMode = LetterBox(Const.referenceWidth, Const.referenceHeight, true);
+    s2d.scaleMode = LetterBox(Const.REF_WIDTH, Const.REF_HEIGHT, true);
     updateCamSize();
 }
 

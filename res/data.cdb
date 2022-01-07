@@ -48,11 +48,40 @@
 					"typeStr": "13",
 					"name": "test",
 					"kind": null
+				},
+				{
+					"typeStr": "1",
+					"name": "script",
+					"kind": "script"
+				},
+				{
+					"typeStr": "1",
+					"name": "txt",
+					"kind": "localizable"
 				}
 			],
 			"lines": [
 				{
-					"test": "res/Link.aseprite"
+					"test": "res/Link.aseprite",
+					"script": "",
+					"txt": "test"
+				}
+			],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "audio",
+			"columns": [
+				{
+					"typeStr": "13",
+					"name": "",
+					"kind": null
+				}
+			],
+			"lines": [
+				{
+					"": "res/audio/sfx/LA_Sword_Slash1.wav"
 				}
 			],
 			"separators": [],

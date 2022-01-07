@@ -1,5 +1,7 @@
 package systems;
 
+import hxmath.math.Vector2;
+import h2d.col.Point;
 import NitroMath.directionTo;
 import systems.Player.PlayerState;
 import components.CurrentRoom.RoomState;
@@ -20,7 +22,8 @@ enum EnemyState {
 }
 
 var script = "
-    //vel = directionTo(pos.x, pos.y, pPos.x, pPos.y);
+    directionTo(pos.x, pos.y, pPos.x, pPos.y, vel);
+    NM.multVelF(vel, dt);
 ";
 
 function spawnEnemy(x: Int, y: Int, roomId:Int) {
@@ -30,7 +33,10 @@ function spawnEnemy(x: Int, y: Int, roomId:Int) {
         new Position(x, y),
         new Velocity(0., 0.),
         loadAnim(hxd.Res.Link, "IDLE", defaultParent),
-        new RoomState(roomId)
+        new RoomState(roomId),
+        new systems.Hitboxes.Hitbox(x, y),
+        new systems.Hitboxes.Hurtbox(x, y, true),
+        new systems.Hitboxes.Blockbox(x, y)
     );
 }
 
@@ -40,11 +46,6 @@ class Enemy extends System {
 
     var parser = new hscript.Parser();
     var interp = new hscript.Interp();
-    
-    override function onAdded() {
-        // interp.variables.set("move", moveEnemy);
-        
-    }
     
     override function update(_dt: Float) {
         var program = parser.parseString(script);
@@ -57,39 +58,12 @@ class Enemy extends System {
             interp.variables.set("pos", pos);
             interp.variables.set("pPos", pPos);
             interp.variables.set("directionTo", directionTo);
+            interp.variables.set("NM", NitroMath);
 
             // // Yanrishatum explained that expr should prevent context recreation. 
             // // If issues arise, see if using Execute fixes them. Maybe something is carrying over?
             // interp.execute(program);
-            //interp.expr(program);
-            // var temp = directionTo(pos.x, pos.y, pPos.x, pPos.y);
-            // trace("");
-            //vel.copy(temp);
+            interp.expr(program);
         });
-        //});
-
-        // var stick: Vector2 = new Vector2(ctrl.getAnalogValue(MoveX), ctrl.getAnalogValue(MoveY)); 
-
-        // switch (fsm.state) {
-        //     case PlayerState.IDLE:
-        //         if(fsm.stateChanged) play(spr, "IDLE");
-
-        //         if(stick != Vector2.zero) {
-        //             fsm.state = PlayerState.RUN;
-        //             trace('HOR INPUT : ' + ctrl.getAnalogValue(MoveX));
-        //         }
-
-        //         vel.copy(Vector2.zero);
-
-        //     case PlayerState.RUN:
-        //         if(fsm.stateChanged) play(spr, "RUN");
-
-        //         if(stick == Vector2.zero) {
-        //             fsm.state = PlayerState.IDLE;
-        //         }
-
-        //         vel.copy(stick * 30.);
-        //     case _: 
-        // }
     }
 }

@@ -4,7 +4,7 @@ import h2d.Graphics;
 import components.Sprite;
 import components.Position;
 
-class Render extends ecs.System {
+class Sprites extends ecs.System {
     @:fastFamily var drawable : { spr:Sprite, pos:Position };
 
     override function onAdded() {

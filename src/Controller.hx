@@ -1,3 +1,4 @@
+import hxd.Key;
 import dn.heaps.input.ControllerAccess;
 import dn.heaps.input.Controller;
 
@@ -18,6 +19,7 @@ function initController() {
 
     // Bind buttons/keys to actions
     controller.bindKeyboardAsStick(MoveX, MoveY, hxd.Key.UP, hxd.Key.LEFT, hxd.Key.DOWN, hxd.Key.RIGHT);
+    controller.bindKeyboard(Attack, Key.SPACE);
 
     // Handle controller status events
     controller.onConnect = () -> {

@@ -14,13 +14,18 @@ class Sprite {
         resource = _resource;
         anim = _anim;
     }
+
+    public function play(tag: String, loop: Bool = true) {
+        trace("PLAY : " + tag);
+        anim.play(resource.getTag(tag));
+        anim.loop = loop;
+    }
 }
 
 function loadAnim(aseResource: aseprite.res.Aseprite, startTag: String, parent: h2d.Object) {
     var resource = aseResource.toAseprite();
     var anim = new AseAnim(resource.getTag(startTag), parent);
     anim.loop = true;
-
     return new Sprite(resource, anim);
 }
 

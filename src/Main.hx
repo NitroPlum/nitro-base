@@ -1,66 +1,56 @@
-import systems.Rooms.loadRoom;
-import systems.Rooms.project;
-import Layers.groundLayer;
-import systems.Rooms.Rooms;
-import Layers.defaultLayer;
+import Game.newGame;
+import systems.Camera.initCamera;
+import systems.Camera.letterbox;
 import editor.Editor.initEditor;
 import editor.Editor.editorResize;
-import editor.Editor.editorUpdate;
 import Layers.initLayers;
 import hxd.Window;
 import hxd.App;
 import h2d.Layers;
-import systems.Player;
-import systems.Enemy;
-import systems.Render;
-import systems.Movement;
-import systems.Camera;
-import Const.UNIVERSE;
-import Const.referenceHeight;
-import Const.referenceWidth;
+
 import Controller.initController;
-import ecs.Universe;
 
 class Main extends hxd.App {
     override function init() {
-        trace('GAME START');
         hxd.Res.initEmbed();
         initLayers(s2d);
+        initCamera(s2d);
+        systems.Hitboxes.initHitboxDebug(s2d);
         
         defaultParent = Layers.defaultLayer;
-        defaultDebugFont = hxd.res.DefaultFont.get();
+        loadFonts();
         initController();
 
-        UNIVERSE = new Universe(Const.MAX_ENTITIES);
-        UNIVERSE.setSystems(
-            Player,
-            Enemy,
-            Rooms,
-            Movement,
-            Render,
-            Camera
-        );
-
-        //player(0, 0, project.all_levels.Level_0);
-        loadRoom(project.all_levels.Level_0);
-
-        initCamera(s2d);
         #if (hl)
         initEditor();
         #end
         
         Window.getInstance().vsync = true;
-        components.Tiles.cacheTiles();
-        Window.getInstance().resize(referenceWidth * 4, referenceHeight * 4);
+        Window.getInstance().resize(Const.REF_WIDTH * 4, Const.REF_HEIGHT * 4);
+        Window.getInstance().title = Const.GAME_NAME;
+
+        initGame();
     }
 
+    function initGame() {
+        var testing = Std.parseInt(haxe.macro.Compiler.getDefine("nitro"));
+        if(testing == 1) {
+            //Try to load from a save file.
+            // Game.changeScreen(Game.GameScreen.Game, SOME SAVE FILE);
+            // else
+            Game.changeScreen(Game.GameScreen.Game);
+        }
+        else
+            Game.changeScreen(Game.GameScreen.Splash);
+    }
+    
     override function update(dt:Float) {    
         Layers.defaultLayer.ysort(0);
-        UNIVERSE.update(dt);
+        Game.update(dt);
 
-        #if (hl)
-        editorUpdate(dt);
-        #end
+        // #if (hl)
+        // editorUpdate(dt);
+        // #end
     }
 
     override function onResize() {
@@ -69,11 +59,6 @@ class Main extends hxd.App {
         #if (hl)
         editorResize(s2d.width, s2d.height);
         #end
-    }
-
-    function scaleToFit() {
-        groundLayer.setScale( dn.heaps.Scaler.bestFit_f(Const.referenceWidth, Const.referenceHeight));
-        defaultLayer.setScale( dn.heaps.Scaler.bestFit_f(Const.referenceWidth, Const.referenceHeight));
     }
     
     static function main() {

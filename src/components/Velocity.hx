@@ -1,13 +1,13 @@
 package components;
 
-import hxmath.math.Vector2;
+import h2d.col.Point;
 
-@:forward
-abstract Velocity(Vector2) {
+class Velocity extends Point {
+    public function new(x = .0, y =.0) {
+        super(x, y);
+    }
 
-    public inline function new(x = .0, y = .0) this = new Vector2(x, y);
-    public inline function copy(vec: Vector2) {
-        this.x = vec.x;
-        this.y = vec.y;
+    public function setDir(point: Point, mag: Float) {
+        set(point.x * mag, point.y * mag);
     }
 }

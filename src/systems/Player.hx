@@ -1,5 +1,7 @@
 package systems;
 
+import systems.Hitboxes;
+import h2d.col.Point;
 import systems.Rooms.changeRoom;
 import editor.Editor.status;
 import components.CurrentRoom;
@@ -29,38 +31,73 @@ function player(x: Int, y: Int, level: LdtkProject_Level) {
         new Position(x, y),
         new Velocity(0., 0.),
         loadAnim(hxd.Res.Link, "IDLE", defaultParent),
-        roomState
+        roomState,
+        new systems.Hitboxes.Hitbox(x, y, true),
+        new systems.Hitboxes.Hurtbox(x, y),
+        new systems.Hitboxes.Blockbox(x, y)
     );
     changeRoom(roomState, level);
 }
 
 class Player extends ecs.System {
-    @:fastFamily var players : { fsm: FSM<PlayerState>, spr:Sprite, pos:Position, vel: Velocity };
+    @:fastFamily var players : { fsm: FSM<PlayerState>, spr:Sprite, pos:Position, vel: Velocity, hit: Hitbox, hurt: Hurtbox, block: Blockbox};
+
     override function update(_dt: Float) {
         iterate(players, {
-            
 
             fsm.updateState();
-            var stick: Vector2 = new Vector2(ctrl.getAnalogValue(MoveX), ctrl.getAnalogValue(MoveY)); 
+            var stick: Point = new Point(ctrl.getAnalogValue(MoveX), ctrl.getAnalogValue(MoveY)); 
+            hit.enabled = false;
+            hurt.enabled = false;
+            block.enabled = false;
 
             switch (fsm.state) {
                 case PlayerState.IDLE:
                     if(fsm.stateChanged) play(spr, "IDLE");
 
-                    if(!Vector2.equals(stick, Vector2.zero)) {
+                    if(ctrl.isPressed(Attack))
+                        fsm.changeState(PlayerState.SWORD);
+
+                    else if(!Vector2.equals(stick, Vector2.zero)) {
                         fsm.changeState(PlayerState.RUN);
                     }
 
-                    vel.copy(Vector2.zero);
+                    vel.set();
 
                 case PlayerState.RUN:
                     if(fsm.stateChanged) play(spr, "RUN");
+
+                    if(ctrl.isPressed(Attack)) {
+                        fsm.changeState(PlayerState.SWORD);
+                        break;
+                    }
 
                     if(Vector2.equals(stick, Vector2.zero)) {
                         fsm.changeState(PlayerState.IDLE);
                     }
 
-                    vel.copy(stick * 4 * _dt);
+                    vel.setDir(stick, 4 * _dt);
+
+                case PlayerState.SWORD:
+                    // ON ENTER
+                    if(fsm.stateChanged) {
+                        vel.set();
+                        Audio.sounds.LA_Sword_Slash.drawAndPlay();
+                        play(spr, "ATTACK");
+
+                        spr.anim.onAnimEnd = () -> {
+                            if(!Vector2.equals(stick, Vector2.zero)) {
+                                fsm.changeState(PlayerState.RUN);
+                            } else {
+                                fsm.changeState(PlayerState.IDLE);
+                            }
+                        };
+                    };
+
+                    // UPDATE
+                    hit.enabled = true;
+                    hit.offsetX = -16;
+                    
                 case _: 
             }
 
