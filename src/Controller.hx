@@ -6,7 +6,7 @@ import dn.heaps.input.Controller;
 enum GameActions {
     MoveX;
     MoveY;
-    Jump;
+    Interact;
     Attack;
 }
 
@@ -19,7 +19,12 @@ function initController() {
 
     // Bind buttons/keys to actions
     controller.bindKeyboardAsStick(MoveX, MoveY, hxd.Key.UP, hxd.Key.LEFT, hxd.Key.DOWN, hxd.Key.RIGHT);
-    controller.bindKeyboard(Attack, Key.SPACE);
+    controller.bindKeyboard(Attack, Key.X);
+    controller.bindKeyboard(Interact, Key.SPACE);
+
+    controller.bindPadLStick(MoveX, MoveY);
+    controller.bindPad(Interact, PadButton.A);
+    controller.bindPad(Attack, PadButton.X);
 
     // Handle controller status events
     controller.onConnect = () -> {

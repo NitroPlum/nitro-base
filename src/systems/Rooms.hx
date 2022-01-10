@@ -1,4 +1,6 @@
 package systems;
+import cdb.Data;
+import systems.Interactions;
 import systems.Enemy.EnemyState;
 import components.CurrentRoom;
 import systems.Player.PlayerState;
@@ -54,6 +56,11 @@ function loadRoom (level: LdtkProject_Level) {
     for(enemy in level.l_Entities.all_EnemySpawn) {
         Enemy.spawnEnemy(enemy.pixelX, enemy.pixelY, level.uid);
     }
+
+    for(interact in level.l_Entities.all_Interact) {
+        trace("CREATE");
+        createInteractable(interact.pixelX, interact.pixelY, interact.f_script, level.uid);
+    }
 }
 
 function getRoom(uid: Int) {
@@ -63,6 +70,7 @@ function getRoom(uid: Int) {
 class Rooms extends System {
     @:fastFamily var player : { fsm: FSM<PlayerState>, pos : Position, roomState: RoomState};
     @:fastFamily var enemies: { enemyFSM: FSM<EnemyState>, enemyPos : Position, enemyRoomState: RoomState};
+    @:fastFamily var interactables: { interact: Interactable, interactRoomState: RoomState};
     override function update(_dt: Float) {
         iterate(player, {
             updateCurrentRoom(roomState, Std.int(pos.x), Std.int(pos.y));
@@ -70,6 +78,12 @@ class Rooms extends System {
             iterate(enemies, enemy -> {
                 if (enemyRoomState.current != roomState.current) {
                     UNIVERSE.deleteEntity(enemy);
+                }
+            });
+
+            iterate(interactables, interaction -> {
+                if (interactRoomState.current != roomState.current) {
+                    UNIVERSE.deleteEntity(interaction);
                 }
             });
         });

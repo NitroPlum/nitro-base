@@ -10,6 +10,7 @@ import systems.Movement;
 import systems.Camera;
 import systems.Hitboxes;
 import systems.UI;
+import systems.Interactions;
 import Const.UNIVERSE;
 import ecs.Universe;
 
@@ -69,17 +70,23 @@ inline function continueGame(gameSave: Int) {
 } 
 
 inline function initGame() {
-    UNIVERSE = new Universe(Const.MAX_ENTITIES);
-    UNIVERSE.setSystems(
-        Player,
-        Enemy,
-        Rooms,
-        Movement,
-        Hitboxes,
-        Sprites,
-        Camera,
-        UI
-    );
+    Const.UNIVERSE = Universe.create({
+        entities : 1024,
+        phases   : [
+            {
+                name    : 'update',
+                systems : [ Player,
+                    Enemy,
+                    Rooms,
+                    Movement,
+                    Hitboxes,
+                    Sprites,
+                    Camera,
+                    UI,
+                    Interactions]
+            }
+        ]
+    });
 
     initCamera(s2d);
 }

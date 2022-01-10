@@ -1,10 +1,11 @@
+import h2d.col.Point;
 import components.Velocity;
 import hxmath.math.Vector2;
 
 @:publicFields
 class NitroMath {
     // TODO: Use Fast Inverse Square Root Instead? Seems like it may not be needed.
-    static inline function directionTo(ax: Float, ay: Float, bx: Float, by: Float, result: Velocity) {
+    static inline function directionTo(ax: Float, ay: Float, bx: Float, by: Float, result: Point) {
         var dirX = bx - ax;
         var dirY = by - ay;
         var mag = Math.sqrt(dirX*dirX + dirY*dirY);

@@ -1,5 +1,8 @@
 package systems;
 
+import components.Script;
+import systems.Interactions;
+import systems.Interactions.Interactable;
 import systems.Hitboxes;
 import h2d.col.Point;
 import systems.Rooms.changeRoom;
@@ -13,6 +16,7 @@ import components.Sprite.play;
 import components.Position;
 import components.Velocity;
 import components.Sprite.Sprite;
+import components.Facing;
 import components.FSM;
 import Controller;
 
@@ -25,25 +29,35 @@ enum PlayerState {
 
 function player(x: Int, y: Int, level: LdtkProject_Level) {
     final player = UNIVERSE.createEntity();
-    var roomState = new RoomState(-1);
+    var fsm = new FSM<PlayerState>(PlayerState.IDLE);
+    var roomState = new RoomState(level.uid);
     UNIVERSE.setComponents(player,
-        new FSM<PlayerState>(PlayerState.IDLE),
+        fsm,
         new Position(x, y),
         new Velocity(0., 0.),
         loadAnim(hxd.Res.Link, "IDLE", defaultParent),
         roomState,
         new systems.Hitboxes.Hitbox(x, y, true),
         new systems.Hitboxes.Hurtbox(x, y),
-        new systems.Hitboxes.Blockbox(x, y)
+        new systems.Hitboxes.Blockbox(x, y),
+        new Facing()
     );
-    changeRoom(roomState, level);
 }
 
 class Player extends ecs.System {
-    @:fastFamily var players : { fsm: FSM<PlayerState>, spr:Sprite, pos:Position, vel: Velocity, hit: Hitbox, hurt: Hurtbox, block: Blockbox};
+    @:fastFamily var players : { fsm: FSM<PlayerState>, spr:Sprite, pos:Position, vel: Velocity, hit: Hitbox, hurt: Hurtbox, block: Blockbox, facing: Facing};
+    @:fastFamily var interactions : { interact: Interactable, interaction: Script };
 
     override function update(_dt: Float) {
+
         iterate(players, {
+            function runInteraction() {
+                iterate(interactions, {
+                    if(interact.canInteract == true) {
+                        runScript(interaction);
+                    }
+                });
+            }
 
             fsm.updateState();
             var stick: Point = new Point(ctrl.getAnalogValue(MoveX), ctrl.getAnalogValue(MoveY)); 
@@ -55,13 +69,20 @@ class Player extends ecs.System {
                 case PlayerState.IDLE:
                     if(fsm.stateChanged) play(spr, "IDLE");
 
-                    if(ctrl.isPressed(Attack))
+                    if(ctrl.isPressed(Attack)) {
                         fsm.changeState(PlayerState.SWORD);
+                        return;
+                    }
+
+                    else if(ctrl.isPressed(Interact)) {
+                        runInteraction();
+                        return;
+                    }
 
                     else if(!Vector2.equals(stick, Vector2.zero)) {
                         fsm.changeState(PlayerState.RUN);
+                        return;
                     }
-
                     vel.set();
 
                 case PlayerState.RUN:
@@ -69,14 +90,21 @@ class Player extends ecs.System {
 
                     if(ctrl.isPressed(Attack)) {
                         fsm.changeState(PlayerState.SWORD);
-                        break;
+                        return;
+                    }
+
+                    else if(ctrl.isPressed(Interact)) {
+                        runInteraction();
+                        return;
                     }
 
                     if(Vector2.equals(stick, Vector2.zero)) {
                         fsm.changeState(PlayerState.IDLE);
+                        return;
                     }
 
                     vel.setDir(stick, 4 * _dt);
+                    facing.dir = updateFacing(stick);
 
                 case PlayerState.SWORD:
                     // ON ENTER

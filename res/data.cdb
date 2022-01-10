@@ -1,53 +1,43 @@
 {
 	"sheets": [
 		{
-			"name": "test",
+			"name": "enemies",
 			"columns": [
-				{
-					"typeStr": "13",
-					"name": "file",
-					"kind": null
-				}
-			],
-			"lines": [
-				{
-					"file": "Link.aseprite"
-				}
-			],
-			"separators": [],
-			"props": {}
-		},
-		{
-			"name": "test2",
-			"columns": [
-				{
-					"typeStr": "13",
-					"name": "Sprite",
-					"opt": true
-				},
 				{
 					"typeStr": "0",
-					"name": "uid",
+					"name": "Type",
 					"kind": null,
 					"scope": null
-				}
-			],
-			"lines": [
+				},
 				{
-					"Sprite": "res/Link.aseprite",
-					"uid": ""
+					"typeStr": "3",
+					"name": "hp",
+					"kind": null
+				},
+				{
+					"typeStr": "13",
+					"name": "sprite",
+					"kind": null
+				},
+				{
+					"typeStr": "1",
+					"name": "script",
+					"kind": "script",
+					"opt": true
 				}
 			],
+			"lines": [],
 			"separators": [],
 			"props": {}
 		},
 		{
-			"name": "test3",
+			"name": "npcs",
 			"columns": [
 				{
-					"typeStr": "13",
-					"name": "test",
-					"kind": null
+					"typeStr": "0",
+					"name": "id",
+					"kind": null,
+					"scope": null
 				},
 				{
 					"typeStr": "1",
@@ -55,35 +45,46 @@
 					"kind": "script"
 				},
 				{
-					"typeStr": "1",
-					"name": "txt",
-					"kind": "localizable"
+					"typeStr": "13",
+					"name": "sprite",
+					"opt": true,
+					"kind": null
 				}
 			],
 			"lines": [
 				{
-					"test": "res/Link.aseprite",
-					"script": "",
-					"txt": "test"
+					"id": "WelcomeSign",
+					"script": "trace(\"Welcome!\");"
 				}
 			],
 			"separators": [],
 			"props": {}
 		},
 		{
-			"name": "audio",
-			"columns": [
-				{
-					"typeStr": "13",
-					"name": "",
-					"kind": null
-				}
-			],
-			"lines": [
-				{
-					"": "res/audio/sfx/LA_Sword_Slash1.wav"
-				}
-			],
+			"name": "gear",
+			"columns": [],
+			"lines": [],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "items",
+			"columns": [],
+			"lines": [],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "itemLocations",
+			"columns": [],
+			"lines": [],
+			"separators": [],
+			"props": {}
+		},
+		{
+			"name": "credits",
+			"columns": [],
+			"lines": [],
 			"separators": [],
 			"props": {}
 		}

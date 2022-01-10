@@ -1,5 +1,6 @@
 package systems;
 
+import h2d.col.Point;
 import systems.Rooms.getRoom;
 import ldtk.Project;
 import components.CurrentRoom.RoomState;

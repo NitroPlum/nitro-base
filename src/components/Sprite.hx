@@ -1,7 +1,5 @@
 package components;
 
-import hxd.Res;
-import hxd.res.Loader;
 import aseprite.Aseprite;
 import aseprite.AseAnim;
 
@@ -16,7 +14,7 @@ class Sprite {
     }
 
     public function play(tag: String, loop: Bool = true) {
-        trace("PLAY : " + tag);
+        //trace("PLAY : " + tag);
         anim.play(resource.getTag(tag));
         anim.loop = loop;
     }
@@ -29,8 +27,25 @@ function loadAnim(aseResource: aseprite.res.Aseprite, startTag: String, parent: 
     return new Sprite(resource, anim);
 }
 
+// function loadAnimFromFile(path: String, startTag: String, parent: h2d.Object) {
+//     var resource = hxd.Res.loader.load(path).to;
+//     var temp = new aseprite.res.Aseprite(resource);
+
+//     var anim = new AseAnim(resource.getTag(startTag), parent);
+//     anim.loop = true;
+//     return new Sprite(resource, anim);
+// }
+
+function animFromFile(path: String, startTag: String, parent: h2d.Object) { 
+    var file = hxd.Res.loader.load(path);
+    var ase = Aseprite.fromBytes(file.entry.getBytes());
+    var anim = new AseAnim(ase.getTag(startTag), parent);
+    anim.loop = true;
+    return new Sprite(ase, anim);
+}
+
 function play(sprite: Sprite, tag: String, loop: Bool = true) {
-    trace("PLAY : " + tag);
+    //trace("PLAY : " + tag);
     sprite.anim.play(sprite.resource.getTag(tag));
     sprite.anim.loop = loop;
 }

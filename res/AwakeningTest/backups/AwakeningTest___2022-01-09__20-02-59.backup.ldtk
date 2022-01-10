@@ -9,7 +9,7 @@
 		"url": "https://ldtk.io"
 	},
 	"jsonVersion": "0.9.3",
-	"nextUid": 38,
+	"nextUid": 50,
 	"worldLayout": "Free",
 	"worldGridWidth": 256,
 	"worldGridHeight": 256,
@@ -97,7 +97,7 @@
 		{
 			"identifier": "EnemySpawn",
 			"uid": 16,
-			"tags": [],
+			"tags": ["Enemy"],
 			"width": 16,
 			"height": 16,
 			"resizableX": false,
@@ -136,6 +136,49 @@
 					"regex": null,
 					"acceptFileTypes": null,
 					"defaultOverride": null,
+					"textLanguageMode": null
+				},
+				{
+					"identifier": "Script",
+					"__type": "String",
+					"uid": 43,
+					"type": "F_Text",
+					"isArray": false,
+					"canBeNull": true,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": {
+						"id": "V_String",
+						"params": ["NM.directionTo(pos.x, pos.y, pPos.x, pPos.y, vel); NM.multVelF(vel, dt);"]
+					},
+					"textLanguageMode": "LangHaxe"
+				},
+				{
+					"identifier": "HP",
+					"__type": "Int",
+					"uid": 44,
+					"type": "F_Int",
+					"isArray": false,
+					"canBeNull": false,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": { "id": "V_Int", "params": [2] },
 					"textLanguageMode": null
 				}
 			]
@@ -189,6 +232,55 @@
 			"pivotX": 0,
 			"pivotY": 0,
 			"fieldDefs": []
+		},
+		{
+			"identifier": "Interact",
+			"uid": 46,
+			"tags": [],
+			"width": 16,
+			"height": 16,
+			"resizableX": false,
+			"resizableY": false,
+			"keepAspectRatio": false,
+			"fillOpacity": 1,
+			"lineOpacity": 1,
+			"hollow": false,
+			"color": "#C3731D",
+			"renderMode": "Rectangle",
+			"showName": true,
+			"tilesetId": null,
+			"tileId": null,
+			"tileRenderMode": "Stretch",
+			"maxCount": 0,
+			"limitScope": "PerLevel",
+			"limitBehavior": "MoveLastOne",
+			"pivotX": 0.5,
+			"pivotY": 0.5,
+			"fieldDefs": [
+				{
+					"identifier": "script",
+					"__type": "String",
+					"uid": 49,
+					"type": "F_Text",
+					"isArray": false,
+					"canBeNull": true,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": null,
+					"defaultOverride": {
+						"id": "V_String",
+						"params": ["trace(\"Welcome LDTK!\");"]
+					},
+					"textLanguageMode": "LangHaxe"
+				}
+			]
 		}
 	], "tilesets": [
 		{
@@ -227,7 +319,6 @@
 						19,
 						20,
 						21,
-						22,
 						23,
 						24,
 						32,
@@ -303,7 +394,12 @@
 			{ "id": "COLLIDE", "tileId": null, "color": 0, "__tileSrcRect": null }
 		], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null },
 		{ "identifier": "EnemyType", "uid": 29, "values": [{ "id": "TestEnemy", "tileId": null, "color": 16711913, "__tileSrcRect": null }], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null },
-		{ "identifier": "GoalEnum", "uid": 34, "values": [ { "id": "DefeatEnemies", "tileId": null, "color": 0, "__tileSrcRect": null }, { "id": "Press", "tileId": null, "color": 0, "__tileSrcRect": null } ], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null }
+		{ "identifier": "GoalEnum", "uid": 34, "values": [
+			{ "id": "DefeatEnemies", "tileId": null, "color": 0, "__tileSrcRect": null },
+			{ "id": "Press", "tileId": null, "color": 0, "__tileSrcRect": null },
+			{ "id": "GoalEnum0", "tileId": null, "color": 0, "__tileSrcRect": null }
+		], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null },
+		{ "identifier": "Enum", "uid": 47, "values": [{ "id": "Enum0", "tileId": null, "color": 0, "__tileSrcRect": null }], "iconTilesetUid": null, "externalRelPath": null, "externalFileChecksum": null }
 	], "externalEnums": [], "levelFields": [] },
 	"levels": [
 		{
@@ -360,15 +456,15 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "EnemySpawn",
-							"__grid": [7,5],
-							"__pivot": [0,0],
+							"__identifier": "Interact",
+							"__grid": [5,5],
+							"__pivot": [0.5,0.5],
 							"__tile": null,
 							"width": 16,
 							"height": 16,
-							"defUid": 16,
-							"px": [112,80],
-							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
+							"defUid": 46,
+							"px": [88,88],
+							"fieldInstances": [{ "__identifier": "script", "__value": "trace(\"Welcome LDTK!\");", "__type": "String", "defUid": 49, "realEditorValues": [] }]
 						}
 					]
 				},
@@ -534,26 +630,15 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
-							"__identifier": "EnemySpawn",
-							"__grid": [7,6],
-							"__pivot": [0,0],
+							"__identifier": "Interact",
+							"__grid": [3,6],
+							"__pivot": [0.5,0.5],
 							"__tile": null,
 							"width": 16,
 							"height": 16,
-							"defUid": 16,
-							"px": [112,96],
-							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
-						},
-						{
-							"__identifier": "EnemySpawn",
-							"__grid": [17,4],
-							"__pivot": [0,0],
-							"__tile": null,
-							"width": 16,
-							"height": 16,
-							"defUid": 16,
-							"px": [272,64],
-							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
+							"defUid": 46,
+							"px": [56,104],
+							"fieldInstances": [{ "__identifier": "script", "__value": "trace(\"Welcome LDTK!\");", "__type": "String", "defUid": 49, "realEditorValues": [] }]
 						}
 					]
 				},
@@ -871,7 +956,17 @@
 							"height": 16,
 							"defUid": 16,
 							"px": [64,112],
-							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
+							"fieldInstances": [
+								{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] },
+								{
+									"__identifier": "Script",
+									"__value": "NM.directionTo(pos.x, pos.y, pPos.x, pPos.y, vel); NM.multVelF(vel, dt);",
+									"__type": "String",
+									"defUid": 43,
+									"realEditorValues": []
+								},
+								{ "__identifier": "HP", "__value": 2, "__type": "Int", "defUid": 44, "realEditorValues": [] }
+							]
 						}
 					]
 				},
@@ -1135,7 +1230,17 @@
 							"height": 16,
 							"defUid": 16,
 							"px": [80,208],
-							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
+							"fieldInstances": [
+								{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] },
+								{
+									"__identifier": "Script",
+									"__value": "NM.directionTo(pos.x, pos.y, pPos.x, pPos.y, vel); NM.multVelF(vel, dt);",
+									"__type": "String",
+									"defUid": 43,
+									"realEditorValues": []
+								},
+								{ "__identifier": "HP", "__value": 2, "__type": "Int", "defUid": 44, "realEditorValues": [] }
+							]
 						},
 						{
 							"__identifier": "EnemySpawn",
@@ -1146,7 +1251,17 @@
 							"height": 16,
 							"defUid": 16,
 							"px": [320,64],
-							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
+							"fieldInstances": [
+								{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] },
+								{
+									"__identifier": "Script",
+									"__value": "NM.directionTo(pos.x, pos.y, pPos.x, pPos.y, vel); NM.multVelF(vel, dt);",
+									"__type": "String",
+									"defUid": 43,
+									"realEditorValues": []
+								},
+								{ "__identifier": "HP", "__value": 2, "__type": "Int", "defUid": 44, "realEditorValues": [] }
+							]
 						},
 						{
 							"__identifier": "EnemySpawn",
@@ -1157,7 +1272,17 @@
 							"height": 16,
 							"defUid": 16,
 							"px": [320,224],
-							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
+							"fieldInstances": [
+								{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] },
+								{
+									"__identifier": "Script",
+									"__value": "NM.directionTo(pos.x, pos.y, pPos.x, pPos.y, vel); NM.multVelF(vel, dt);",
+									"__type": "String",
+									"defUid": 43,
+									"realEditorValues": []
+								},
+								{ "__identifier": "HP", "__value": 2, "__type": "Int", "defUid": 44, "realEditorValues": [] }
+							]
 						},
 						{
 							"__identifier": "EnemySpawn",
@@ -1168,7 +1293,17 @@
 							"height": 16,
 							"defUid": 16,
 							"px": [112,112],
-							"fieldInstances": [{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] }]
+							"fieldInstances": [
+								{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] },
+								{
+									"__identifier": "Script",
+									"__value": "NM.directionTo(pos.x, pos.y, pPos.x, pPos.y, vel); NM.multVelF(vel, dt);",
+									"__type": "String",
+									"defUid": 43,
+									"realEditorValues": []
+								},
+								{ "__identifier": "HP", "__value": 2, "__type": "Int", "defUid": 44, "realEditorValues": [] }
+							]
 						}
 					]
 				},

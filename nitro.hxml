@@ -8,6 +8,7 @@
 -lib ldtk-haxe-api
 -lib hscript
 -lib tweenxcore
+-lib castle
 -hl base.hl
 -main Main
 -D nitro

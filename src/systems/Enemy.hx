@@ -22,14 +22,15 @@ enum EnemyState {
 }
 
 var script = "
-    directionTo(pos.x, pos.y, pPos.x, pPos.y, vel);
+    NM.directionTo(pos.x, pos.y, pPos.x, pPos.y, vel);
     NM.multVelF(vel, dt);
 ";
 
 function spawnEnemy(x: Int, y: Int, roomId:Int) {
-    final entity = UNIVERSE.createEntity();
+    var entity = UNIVERSE.createEntity();
+    var fsm = new FSM<EnemyState>(EnemyState.IDLE);
     UNIVERSE.setComponents( entity,
-        new FSM<EnemyState>(EnemyState.IDLE),
+        fsm,
         new Position(x, y),
         new Velocity(0., 0.),
         loadAnim(hxd.Res.Link, "IDLE", defaultParent),
