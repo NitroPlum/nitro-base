@@ -16,7 +16,7 @@ class Position {
         y = _y;
         tileX = Std.int(x / Const.TILE_SIZE);
         tileY = Std.int(y / Const.TILE_SIZE);
-        xRatio = ((x - tileX * TILE_SIZE) / TILE_SIZE) - 1;
-        yRatio = ((y - tileY * TILE_SIZE) / TILE_SIZE) - 1;
+        xRatio = ((x - tileX * TILE_SIZE) / TILE_SIZE);
+        yRatio = ((y - tileY * TILE_SIZE) / TILE_SIZE);
     }
 }

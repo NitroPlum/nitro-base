@@ -61,19 +61,14 @@ class Blockbox extends Area {
     }
 }
 
-var debug: Scene;
-function initHitboxDebug(_s2d: Scene) {
-    debug = _s2d;
-}
-
-function drawArea(area: Area, g: h2d.Graphics, color: Int, checkFill = false) {
+function drawArea(area: Area, color: Int, checkFill = false) {
     if(area.enabled) {
         if(checkFill && area.hitType != HitType.None) {
-            g.beginFill(color);
+            debugDraw.beginFill(color);
         }
-        g.lineStyle(1., color, 1.);
-        g.drawCircle(area.x, area.y, area.radius);
-        g.endFill();
+        debugDraw.lineStyle(1., color, 1.);
+        debugDraw.drawCircle(area.x, area.y, area.radius);
+        debugDraw.endFill();
     }
 }
 
@@ -84,12 +79,8 @@ class Hitboxes extends System {
     @:fastFamily var enemies : { enemyFSM: FSM<EnemyState>, eHit: Hitbox, eHurt: Hurtbox, eBlock: Blockbox, ePos: Position };
 
     var resolved: Bool = false;
-
-    // For debug rendering
-    var debugDraw = new h2d.Graphics(debug);
     
     override function update(_dt: Float) {
-        debugDraw.clear();
         iterate(player, {
             hit.update(pos);
             // hurt.update(pos);
@@ -128,9 +119,9 @@ class Hitboxes extends System {
                         resolved = true;
                     }
                 }        
-                drawArea(eHurt, debugDraw, 0x0000FF);        
+                drawArea(eHurt, 0x0000FF);        
             });
-            drawArea(hit, debugDraw, 0xFF0000, true);
+            drawArea(hit, 0xFF0000, true);
         });
     }
 }

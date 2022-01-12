@@ -59,7 +59,7 @@ class UI extends System {
     @:fastFamily var player : { playerFSM: FSM<PlayerState>, playerSpr:Sprite, playerPos:Position, playerVel: Velocity };
     
     var hearts: Heartbar = null;
-    override function onAdded() {
+    override function onEnabled() {
         hearts = new Heartbar(Res.LA_Heart, 8, 4, 8, 4);
     }
 

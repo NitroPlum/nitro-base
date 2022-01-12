@@ -54,7 +54,7 @@ function loadRoom (level: LdtkProject_Level) {
 
     // Spawn Enemies
     for(enemy in level.l_Entities.all_EnemySpawn) {
-        Enemy.spawnEnemy(enemy.pixelX, enemy.pixelY, level.uid);
+        Enemy.spawnEnemy(level.worldX + enemy.pixelX, level.worldY + enemy.pixelY, level.uid);
     }
 
     for(interact in level.l_Entities.all_Interact) {

@@ -13,6 +13,10 @@ var defaultParent: h2d.Object;
 var defaultDebugFont : h2d.Font;
 var menuFont: h2d.Font;
 
+// Debug
+var debugDraw: h2d.Graphics;
+var debug: h2d.Scene;
+
 function loadFonts() {
     defaultDebugFont = hxd.res.DefaultFont.get();
     menuFont = hxd.Res.fonts.monogram.toFont();

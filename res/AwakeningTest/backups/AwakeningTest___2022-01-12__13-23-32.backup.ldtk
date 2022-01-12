@@ -9,7 +9,7 @@
 		"url": "https://ldtk.io"
 	},
 	"jsonVersion": "0.9.3",
-	"nextUid": 50,
+	"nextUid": 51,
 	"worldLayout": "Free",
 	"worldGridWidth": 256,
 	"worldGridHeight": 256,
@@ -115,8 +115,8 @@
 			"maxCount": 0,
 			"limitScope": "PerLevel",
 			"limitBehavior": "MoveLastOne",
-			"pivotX": 0,
-			"pivotY": 0,
+			"pivotX": 0.5,
+			"pivotY": 0.5,
 			"fieldDefs": [
 				{
 					"identifier": "EnemyType",
@@ -279,6 +279,26 @@
 						"params": ["trace(\"Welcome LDTK!\");"]
 					},
 					"textLanguageMode": "LangHaxe"
+				},
+				{
+					"identifier": "Sprite",
+					"__type": "FilePath",
+					"uid": 50,
+					"type": "F_Path",
+					"isArray": false,
+					"canBeNull": true,
+					"arrayMinLength": null,
+					"arrayMaxLength": null,
+					"editorDisplayMode": "Hidden",
+					"editorDisplayPos": "Above",
+					"editorAlwaysShow": false,
+					"editorCutLongValues": true,
+					"min": null,
+					"max": null,
+					"regex": null,
+					"acceptFileTypes": [ ".aseprite", ".ase" ],
+					"defaultOverride": null,
+					"textLanguageMode": null
 				}
 			]
 		}
@@ -381,8 +401,8 @@
 			"customData": [],
 			"savedSelections": [],
 			"cachedPixelData": {
-				"opaqueTiles": "1111111111000000111111111000000011111111100000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-				"averageColors": "f986f865f986f754f754f975f865fcc6f865f975000000000000000000000000f865f875f865f742f742f842f984f663f6630000000000000000000000000000f976f865f976f742f742fec6fca5f963f9630000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f631000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+				"opaqueTiles": "1111111111000000111111111100000011111111100000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+				"averageColors": "f986f865f986f754f754f975f865fcc6f865f975000000000000000000000000f865f875f865f742f742f842f984f663f663fa84000000000000000000000000f976f865f976f742f742fec6fca5f963f9630000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000f631000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
 			}
 		}
 	], "enums": [
@@ -445,6 +465,20 @@
 					"gridTiles": [],
 					"entityInstances": [
 						{
+							"__identifier": "Interact",
+							"__grid": [5,5],
+							"__pivot": [0.5,0.5],
+							"__tile": null,
+							"width": 16,
+							"height": 16,
+							"defUid": 46,
+							"px": [88,88],
+							"fieldInstances": [
+								{ "__identifier": "script", "__value": "trace(\"Welcome LDTK!\");", "__type": "String", "defUid": 49, "realEditorValues": [] },
+								{ "__identifier": "Sprite", "__value": null, "__type": "FilePath", "defUid": 50, "realEditorValues": [] }
+							]
+						},
+						{
 							"__identifier": "PlayerStart",
 							"__grid": [2,4],
 							"__pivot": [0,0],
@@ -456,15 +490,25 @@
 							"fieldInstances": []
 						},
 						{
-							"__identifier": "Interact",
-							"__grid": [5,5],
+							"__identifier": "EnemySpawn",
+							"__grid": [2,6],
 							"__pivot": [0.5,0.5],
 							"__tile": null,
 							"width": 16,
 							"height": 16,
-							"defUid": 46,
-							"px": [88,88],
-							"fieldInstances": [{ "__identifier": "script", "__value": "trace(\"Welcome LDTK!\");", "__type": "String", "defUid": 49, "realEditorValues": [] }]
+							"defUid": 16,
+							"px": [32,96],
+							"fieldInstances": [
+								{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] },
+								{
+									"__identifier": "Script",
+									"__value": "NM.directionTo(pos.x, pos.y, pPos.x, pPos.y, vel); NM.multVelF(vel, dt);",
+									"__type": "String",
+									"defUid": 43,
+									"realEditorValues": []
+								},
+								{ "__identifier": "HP", "__value": 2, "__type": "Int", "defUid": 44, "realEditorValues": [] }
+							]
 						}
 					]
 				},
@@ -638,7 +682,10 @@
 							"height": 16,
 							"defUid": 46,
 							"px": [56,104],
-							"fieldInstances": [{ "__identifier": "script", "__value": "trace(\"Welcome LDTK!\");", "__type": "String", "defUid": 49, "realEditorValues": [] }]
+							"fieldInstances": [
+								{ "__identifier": "script", "__value": "trace(\"Welcome LDTK!\");", "__type": "String", "defUid": 49, "realEditorValues": [] },
+								{ "__identifier": "Sprite", "__value": null, "__type": "FilePath", "defUid": 50, "realEditorValues": [] }
+							]
 						}
 					]
 				},
@@ -950,7 +997,7 @@
 						{
 							"__identifier": "EnemySpawn",
 							"__grid": [4,7],
-							"__pivot": [0,0],
+							"__pivot": [0.5,0.5],
 							"__tile": null,
 							"width": 16,
 							"height": 16,
@@ -1224,7 +1271,7 @@
 						{
 							"__identifier": "EnemySpawn",
 							"__grid": [5,13],
-							"__pivot": [0,0],
+							"__pivot": [0.5,0.5],
 							"__tile": null,
 							"width": 16,
 							"height": 16,
@@ -1245,7 +1292,7 @@
 						{
 							"__identifier": "EnemySpawn",
 							"__grid": [20,4],
-							"__pivot": [0,0],
+							"__pivot": [0.5,0.5],
 							"__tile": null,
 							"width": 16,
 							"height": 16,
@@ -1266,7 +1313,7 @@
 						{
 							"__identifier": "EnemySpawn",
 							"__grid": [20,14],
-							"__pivot": [0,0],
+							"__pivot": [0.5,0.5],
 							"__tile": null,
 							"width": 16,
 							"height": 16,
@@ -1286,13 +1333,13 @@
 						},
 						{
 							"__identifier": "EnemySpawn",
-							"__grid": [7,7],
-							"__pivot": [0,0],
+							"__grid": [6,5],
+							"__pivot": [0.5,0.5],
 							"__tile": null,
 							"width": 16,
 							"height": 16,
 							"defUid": 16,
-							"px": [112,112],
+							"px": [96,80],
 							"fieldInstances": [
 								{ "__identifier": "EnemyType", "__value": null, "__type": "LocalEnum.EnemyType", "defUid": 31, "realEditorValues": [] },
 								{

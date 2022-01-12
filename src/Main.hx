@@ -1,3 +1,4 @@
+import systems.Camera.resizeCamera;
 import Game.newGame;
 import systems.Camera.initCamera;
 import systems.Camera.letterbox;
@@ -15,7 +16,6 @@ class Main extends hxd.App {
         hxd.Res.initEmbed();
         initLayers(s2d);
         initCamera(s2d);
-        systems.Hitboxes.initHitboxDebug(s2d);
         
         defaultParent = Layers.defaultLayer;
         loadFonts();
@@ -29,6 +29,9 @@ class Main extends hxd.App {
         Window.getInstance().resize(Const.REF_WIDTH * 4, Const.REF_HEIGHT * 4);
         Window.getInstance().title = Const.GAME_NAME;
 
+                // TODO : Only run during debug mode
+        debug = s2d;
+        debugDraw = new h2d.Graphics(debug);
         initGame();
     }
 
@@ -46,6 +49,7 @@ class Main extends hxd.App {
     
     override function update(dt:Float) {    
         Layers.defaultLayer.ysort(0);
+        debugDraw.clear();
         Game.update(dt);
 
         // #if (hl)
@@ -54,7 +58,7 @@ class Main extends hxd.App {
     }
 
     override function onResize() {
-        letterbox();
+        resizeCamera();
 
         #if (hl)
         editorResize(s2d.width, s2d.height);

@@ -33,14 +33,18 @@ class Interactions extends ecs.System {
     @:fastFamily var interactions : { interact: Interactable, spr:Sprite, pos:Position };
     @:fastFamily var players : { fsm: FSM<PlayerState>, pSpr:Sprite, pPos:Position, face: Facing };
 
-    override function onAdded() {
-        interactions.onEntityRemoved.subscribe(removeFromScene);
+    public function new(_universe : ecs.Universe) {
+        super(_universe);
     }
 
     function removeFromScene(entity) {
         setup(interactions, {
             table(Sprite).get(entity).anim.remove();
         });
+    }
+
+    override function onEnabled() {
+        interactions.onEntityRemoved.subscribe(removeFromScene);
     }
 
     override function update(_dt: Float) {

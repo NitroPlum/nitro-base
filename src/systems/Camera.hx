@@ -20,13 +20,17 @@ function initCamera(_s2d: Scene) {
     cam.anchorX = 0.5;
     cam.anchorY = 0.5;
 
-    // TODO: Support more viewport modes. I may not even need it.
-    letterbox();
+    resizeCamera();
 }
 
 function updateCamSize() {
     camW = Std.int(cam.viewportWidth / 2);
     camH = Std.int(cam.viewportHeight / 2);
+}
+
+function resizeCamera() {
+    // TODO: Support more viewport modes. I may not even need it.
+    letterbox();
 }
 
 function letterbox() {
